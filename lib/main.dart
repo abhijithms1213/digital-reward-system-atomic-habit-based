@@ -1,6 +1,8 @@
 import 'package:device_preview_plus/device_preview_plus.dart';
 import 'package:drewardsystem/Home/bloc/home_bloc.dart';
 import 'package:drewardsystem/Home/page.dart';
+import 'package:drewardsystem/test/bloc/test_bloc.dart';
+import 'package:drewardsystem/test/page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,16 +27,21 @@ class MyApp extends StatelessWidget {
           title: 'First Method',
           // You can use the library anywhere in the app even in theme
           theme: ThemeData(
+            primaryTextTheme: TextTheme(),
             primarySwatch: Colors.blue,
-            textTheme: Typography.englishLike2018.apply(fontSizeFactor: 1.sp),
+            textTheme: TextTheme()
           ),
           home: child,
         );
       },
-      child:  BlocProvider(
-        create: (context) => HomeBloc(),
-        child: MyHomePage()
+      child: BlocProvider(
+        create: (context) => TestBloc(),
+        child: TestHomeScreen()
       )
+      // child:  BlocProvider(
+      //   create: (context) => HomeBloc(),
+      //   child: MyHomePage()
+      // )
     );
   }
 }
