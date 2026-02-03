@@ -1,144 +1,191 @@
+import 'package:drewardsystem/core/constants/app_assets.dart';
+import 'package:drewardsystem/screens/lottie/controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
-class LottiePage extends StatefulWidget {
-  const LottiePage({super.key});
-
-  @override
-  State<LottiePage> createState() => _LottiePageState();
-}
-
-class _LottiePageState extends State<LottiePage> with TickerProviderStateMixin {
-  late final AnimationController _controller;
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(vsync: this);
-    // _controller=AnimationController(vsync: this)..value=.5..addListener(() {
-    //   setState(() {
-    //   });
-    // },);
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
+class LottiePage extends GetView<LottieController> {
+  LottiePage({super.key});
+  final bgColor = Color(0xFFE7ECEF);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          SizedBox(height: 20),
-          Lottie.asset(
-            'assets/lottie/Success.json',
-            controller: _controller,
-            onLoaded: (composition) {
-              _controller
-                .duration = composition.duration;
-                
-            },
-            repeat: true
-          ),
+      backgroundColor: bgColor,
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Positioned(
+              bottom: -300,
+              left: 0,
+              right: 0,
+              child: Lottie.asset(
+                AppAssets.tapEffectLottie,
+                controller: controller.rippleEffectController,
+                onLoaded: (p0) {
+                  controller.rippleEffectController.duration = p0.duration;
+                },
+                width: MediaQuery.of(context).size.width,
+                height: 700,
+              ),
+            ),
+            // blacksmith tapping widget
+            Positioned(
+              bottom: 40,
+              left: 0,
+              right: 0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Obx(() {
+                    return AnimatedContainer(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        color: bgColor,
+                        boxShadow: controller.isElevated.value
+                            ? [
+                                BoxShadow(
+                                  blurRadius: 30,
+                                  offset: Offset(-28, -28),
+                                  color: Colors.white,
+                                ),
+                                BoxShadow(
+                                  blurRadius: 30,
+                                  offset: Offset(28, 28),
+                                  color: Colors.black45,
+                                ),
+                              ]
+                            : null,
+                      ),
+                      duration: Duration(milliseconds: 100),
+                      child: SizedBox(height: 100, width: 200),
+                    );
+                  }),
+                ],
+              ),
+            ),
+            // Positioned(
+            //   bottom: 20,
+            //   left: 0,
+            //   right: 0,
+            //   // left: 00,
+            //   // right: 0,
+            //   // bottom: 00,
+            //   // top: 0,
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.center,
+            //     children: [
+            //       Lottie.asset(
+            //         AppAssets.hammerLottie,
+            //         height: 200,
+            //         width: 200,
+            //         controller: controller.blackSmithController,
+            //         frameRate: FrameRate(120),
+            //         // onLoaded: (composition) {
+            //         //   controller.blackSmithController.duration =
+            //         //       composition.duration;
+            //         // },
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            // celebration lottie confetti
+            Positioned(
+              left: 00,
+              right: 0,
+              bottom: 00,
+              top: 0,
+              child: LottieBuilder.asset(
+                AppAssets.confettiLottie,
+                frameRate: FrameRate(60),
+                controller: controller.celebrationController,
+                onLoaded: (composition) {
+                  // _celebrationController.duration = composition.duration;
+                },
+                width: 250,
+                height: 250,
+                // width: MediaQuery.of(context).size.width,
+                // height: MediaQuery.of(context).size.height,
+                fit: BoxFit.cover,
+              ),
+            ),
 
-          ElevatedButton(onPressed:() {
-            _controller.reverse();
-            setState(() {
-              
-            });
-          }, child: Text('forward'))
-        ],
+            //earnedPoint center
+            Positioned(
+              left: 0,
+              right: 0,
+              top: 100,
+              child: Container(
+                // color: Colors.amber,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Lottie.asset(
+                      AppAssets.pointEarnLottie,
+                      controller: controller.earnedPointController,
+
+                      width: 200,
+                      height: 200,
+                      fit: BoxFit.cover,
+                    ),
+                  ],
+                ),
+              ),
+            ), //troffy center
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              top: 0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Lottie.asset(
+                    AppAssets.trophyLottie,
+                    controller: controller.trophyController,
+                    onLoaded: (composition) {
+                      controller.trophyController.duration =
+                          composition.duration;
+                    },
+                    width: 200,
+                    height: 200,
+                    fit: BoxFit.cover,
+                  ),
+                ],
+              ),
+            ),
+
+            // button overlay
+            Positioned(
+              bottom: 40,
+              left: 0,
+              right: 0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: controller.isAnimating.value
+                        ? null
+                        : () {
+                            controller.onTap();
+                          },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        // color: Colors.red,
+                        shape: BoxShape.rectangle,
+                      ),
+                      height: 100,
+                      width: 200,
+                      child: Text(''),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
-
-    // return Scaffold(
-    //       appBar: AppBar(title: const Text('Animation control')),
-    //       body: Column(
-    //         children: <Widget>[
-    //           const SizedBox(height: 20),
-    //           Lottie.asset(
-    //             'assets/lottie/Success.json',
-    //             controller: _controller,
-    //             height: 300,
-    //             onLoaded: (composition) {
-    //               setState(() {
-    //                 _controller.duration = composition.duration;
-    //               });
-    //             },
-    //           ),
-    //           Text(_controller.value.toStringAsFixed(2)),
-    //           Row(
-    //             mainAxisAlignment: MainAxisAlignment.center,
-    //             children: [
-    //               // Play backward
-    //               IconButton(
-    //                 icon: const Icon(Icons.arrow_left),
-    //                 onPressed: () {
-    //                   _controller.reverse();
-    //                 },
-    //               ),
-    //               // Pause
-    //               IconButton(
-    //                 icon: const Icon(Icons.pause),
-    //                 onPressed: () {
-    //                   _controller.stop();
-    //                 },
-    //               ),
-    //               // Play forward
-    //               IconButton(
-    //                 icon: const Icon(Icons.arrow_right),
-    //                 onPressed: () {
-    //                   _controller.forward();
-    //                 },
-    //               ),
-    //             ],
-    //           ),
-    //           const SizedBox(height: 30),
-    //           ElevatedButton(
-    //             onPressed: () {
-    //               // Loop between 2 specifics frames
-
-    //               var start = 0.1;
-    //               var stop = 0.5;
-    //               _controller.repeat(
-    //                 min: start,
-    //                 max: stop,
-    //                 reverse: true,
-    //                 period: _controller.duration! * (stop - start),
-    //               );
-    //             },
-    //             child: const Text('Loop between frames'),
-    //           ),
-    //         ],
-    //       ),
-    //     );
-
-    // return Scaffold(
-    //   body: SizedBox(
-    //     height: double.infinity,
-    //     width: double.infinity,
-    //     child: SingleChildScrollView(
-    //       child: Column(
-    //         children: [
-    //           SizedBox(
-    //             height: 190,
-    //             width: 190,
-    //             child: LottieBuilder.asset('assets/lottie/Stress Management.json'),
-    //           ),
-    //           Center(
-    //             child: SizedBox(
-    //               height: 190,
-    //               width: 190,
-    //               child: LottieBuilder.asset('assets/lottie/Success.json',height: 50,width: 50,frameRate: FrameRate(30),),
-    //             ),
-    //           ),
-    //           SizedBox(height: 10),
-    //         ],
-    //       ),
-    //     ),
-    //   ),
-    // );
   }
 }

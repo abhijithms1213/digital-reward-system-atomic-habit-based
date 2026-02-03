@@ -1,4 +1,5 @@
 import 'package:device_preview_plus/device_preview_plus.dart';
+import 'package:drewardsystem/screens/lottie/bindings.dart';
 import 'package:drewardsystem/screens/lottie/page.dart';
 import 'package:drewardsystem/screens/search/page.dart';
 import 'package:drewardsystem/screens/search/search_mock_api.dart';
@@ -8,6 +9,7 @@ import 'package:drewardsystem/screens/todo_screen/page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get_navigation/get_navigation.dart';
 
 // Source - https://stackoverflow.com/a
 // Posted by Mangaldeep Singh Pannu, modified by community. See post 'Timeline' for change history
@@ -42,7 +44,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 // }
 
 void main() {
-  runApp(DevicePreview(builder:(context) => const MyApp(),enabled: !kReleaseMode,));
+  runApp(
+    DevicePreview(builder: (context) => const MyApp(), enabled: !kReleaseMode),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -55,20 +59,28 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (_, child) {
-        return MaterialApp(
+        return GetMaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'First Method',
           // You can use the library anywhere in the app even in theme
           theme: ThemeData(
             primaryTextTheme: TextTheme(),
             primarySwatch: Colors.blue,
-            textTheme: TextTheme()
+            textTheme: TextTheme(),
           ),
-          home: child,
+          // home: child,
+          initialRoute: '/',
+          getPages: [
+            GetPage(
+              name: '/',
+              page: () => LottiePage(),
+              binding: LottieBindings(),
+            ),
+          ],
         );
       },
       // child:  TestMockAPiScreen(),
-      child: LottiePage(),
+      // child: LottiePage(),
       // child: ScreenTodo(),
       // child: BlocProvider(
       //   create: (context) => TestBloc(),
@@ -81,4 +93,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
