@@ -14,7 +14,7 @@ class LottieController extends GetxController with GetTickerProviderStateMixin {
   late final AnimationController earnedPointController;
   late AudioPlayer audioPlayer;
   late AudioPlayer earnAudioPlayer;
-  late AudioPlayer clickAudioPlayer;
+  final AudioPlayer enterSFXAudioPlayer = AudioPlayer();
   final isAnimating = false.obs;
   final isElevated = true.obs;
 
@@ -28,16 +28,30 @@ class LottieController extends GetxController with GetTickerProviderStateMixin {
   _audio() async {
     audioPlayer = AudioPlayer();
     earnAudioPlayer = AudioPlayer();
-    clickAudioPlayer = AudioPlayer()
-      ..setAsset(AppAssets.sfxEnterButton)
-      ..setClip(start: Duration(milliseconds: 1360), end: Duration(seconds: 2));
+    enterSFXAudioPlayer.setAsset(AppAssets.sfxEnterButton);
+    enterSFXAudioPlayer.setClip(
+      start: Duration(milliseconds: 1380),
+      end: Duration(seconds: 2),
+    );
+    enterSFXAudioPlayer.playerStateStream.listen((state) {
+      if (state.processingState == ProcessingState.completed) {
+        enterSFXAudioPlayer.pause();
+        enterSFXAudioPlayer.seek(Duration.zero);
+      }
+    });
+    audioPlayer.setAsset(AppAssets.sfxUpVolumeRise);
+    audioPlayer.setClip(
+      start: Duration(milliseconds: 1300),
+      end: Duration(seconds: 4),
+    );
+
+    // start earn sfx
+    await earnAudioPlayer.setAsset(AppAssets.sfxEarn);
+
     await audioPlayer.setVolume(10);
     await earnAudioPlayer.setVolume(0.6);
-    // clickAudioPlayer.setAsset(AppAssets.sfxEnterButton);
-    // clickAudioPlayer.setClip(
-    //   start: Duration(milliseconds: 1360),
-    //   end: Duration(seconds: 2),
-    // );
+
+    await enterSFXAudioPlayer.setVolume(0.6);
     await audioPlayer.setSpeed(2.4);
   }
 
@@ -70,29 +84,16 @@ class LottieController extends GetxController with GetTickerProviderStateMixin {
       // tapping controller
       blackSmithController.forward();
       rippleEffectController.forward();
-      await audioPlayer.setAsset(AppAssets.sfxUpVolumeRise);
-      await audioPlayer.setClip(
-        start: Duration(milliseconds: 1300),
-        end: Duration(seconds: 4),
-      );
 
-      // audioPlayer.play();
-      // controller.audioPlayer.playerStateStream.listen((state) {
-      //   if (state.playing==true) {
-      //     log('inside if ');
-      //     controller.audioPlayer.play();
-      //   }
-      // });
+      audioPlayer.play();
 
       // waits for the timing
       await Future.delayed(Duration(milliseconds: 950));
 
-      // start earn sfx
-      await earnAudioPlayer.setAsset(AppAssets.sfxEarn);
       // celebration coffine forward after hit
       var celeTicket = celebrationController.forward();
 
-      // earnAudioPlayer.play();
+      earnAudioPlayer.play();
 
       await Future.delayed(Duration(milliseconds: 100));
       trophyController.forward();
@@ -110,42 +111,43 @@ class LottieController extends GetxController with GetTickerProviderStateMixin {
         blackSmithController.reset();
         earnedPointController.reset();
       });
-      // await controller.earnAudioPlayer.stop();
-      // await controller.audioPlayer.stop();
-      // when completed the hit controller
-      // hittingHammer.whenComplete(()  {
-      // });
     } finally {
+      audioPlayer.pause();
+      audioPlayer.seek(Duration.zero);
+      earnAudioPlayer.pause();
+      earnAudioPlayer.seek(Duration.zero);
       isAnimating.value = false;
-      isElevated.value = true;
+      // isElevated.value = true; //for work on hold
     }
   }
 
   click() async {
-    clickAudioPlayer.setAsset(AppAssets.sfxEnterButton);
-    clickAudioPlayer.setClip(
-      start: Duration(milliseconds: 1360),
-      end: Duration(seconds: 2),
-    );
-    var enterClick = clickAudioPlayer.play();
+    handleEnter();
     isElevated.value = false;
 
     await Future.delayed(const Duration(milliseconds: 220));
     isElevated.value = true;
-    enterClick.whenComplete(() {
-      clickAudioPlayer.stop();
-    });
   }
 
   @override
   void dispose() {
     audioPlayer.dispose();
-    clickAudioPlayer.dispose();
+    enterSFXAudioPlayer.dispose();
     blackSmithController.dispose();
     trophyController.dispose();
     celebrationController.dispose();
     rippleEffectController.dispose();
     completedController.dispose();
     super.dispose();
+  }
+
+  void handleEnter() {
+    if (enterSFXAudioPlayer.playing) {
+      enterSFXAudioPlayer.pause();
+      enterSFXAudioPlayer.seek(Duration.zero);
+      enterSFXAudioPlayer.play();
+    } else {
+      enterSFXAudioPlayer.play();
+    }
   }
 }

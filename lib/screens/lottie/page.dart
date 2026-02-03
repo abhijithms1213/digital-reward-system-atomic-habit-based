@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:drewardsystem/core/constants/app_assets.dart';
 import 'package:drewardsystem/screens/lottie/controller.dart';
 import 'package:flutter/material.dart';
@@ -165,6 +167,14 @@ class LottiePage extends GetView<LottieController> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   GestureDetector(
+                    onTapDown: (_) {
+                      controller.isElevated.value = false;
+                      debugPrint('Yellow onTapCancel');
+                    },
+                    onTapUp: (_) {
+                      debugPrint('Green onTapCancel');
+                      controller.isElevated.value = true;
+                    },
                     onTap: controller.isAnimating.value
                         ? null
                         : () {
