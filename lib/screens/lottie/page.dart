@@ -1,7 +1,7 @@
 import 'dart:developer';
-
 import 'package:drewardsystem/core/constants/app_assets.dart';
 import 'package:drewardsystem/screens/lottie/controller.dart';
+import 'package:drewardsystem/screens/lottie/model/habit_models.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -65,32 +65,7 @@ class LottiePage extends GetView<LottieController> {
                 ],
               ),
             ),
-            // Positioned(
-            //   bottom: 20,
-            //   left: 0,
-            //   right: 0,
-            //   // left: 00,
-            //   // right: 0,
-            //   // bottom: 00,
-            //   // top: 0,
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.center,
-            //     children: [
-            //       Lottie.asset(
-            //         AppAssets.hammerLottie,
-            //         height: 200,
-            //         width: 200,
-            //         controller: controller.blackSmithController,
-            //         frameRate: FrameRate(120),
-            //         // onLoaded: (composition) {
-            //         //   controller.blackSmithController.duration =
-            //         //       composition.duration;
-            //         // },
-            //       ),
-            //     ],
-            //   ),
-            // ),
-            // celebration lottie confetti
+            // celebration lottie confetti trophy
             Positioned(
               left: 00,
               right: 0,
@@ -100,9 +75,7 @@ class LottiePage extends GetView<LottieController> {
                 AppAssets.confettiLottie,
                 frameRate: FrameRate(60),
                 controller: controller.celebrationController,
-                onLoaded: (composition) {
-                  // _celebrationController.duration = composition.duration;
-                },
+                onLoaded: (composition) {},
                 width: 250,
                 height: 250,
                 // width: MediaQuery.of(context).size.width,
@@ -125,7 +98,6 @@ class LottiePage extends GetView<LottieController> {
                     Lottie.asset(
                       AppAssets.pointEarnLottie,
                       controller: controller.earnedPointController,
-
                       width: 200,
                       height: 200,
                       fit: BoxFit.cover,
@@ -133,7 +105,8 @@ class LottiePage extends GetView<LottieController> {
                   ],
                 ),
               ),
-            ), //troffy center
+            ),
+            //troffy center
             Positioned(
               bottom: 0,
               left: 0,
@@ -143,17 +116,61 @@ class LottiePage extends GetView<LottieController> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Lottie.asset(
-                    AppAssets.trophyLottie,
-                    controller: controller.trophyController,
-                    onLoaded: (composition) {
-                      controller.trophyController.duration =
-                          composition.duration;
-                    },
-                    width: 200,
-                    height: 200,
-                    fit: BoxFit.cover,
-                  ),
+                  Obx(() {
+                    final mode = controller.firstCategories.value.modeName;
+                    if (controller.loading.value) {
+                      return Lottie.asset(
+                        // 'assets/lottie/Water splash effect.json',
+                        AppAssets.pointEarnLottie,
+                        controller: controller.loadingController,
+                        width: 250,
+                        height: 250,
+                      );
+                    }
+                    switch (mode) {
+                      case 'Dev':
+                        return Lottie.asset(
+                          AppAssets.developerLottie,
+                          controller: controller.devHabitController,
+                          width: 250,
+                          height: 250,
+                        );
+
+                      case 'reading':
+                        return Lottie.asset(
+                          AppAssets.readingLottie,
+                          controller: controller.readController,
+                          width: 250,
+                          height: 250,
+                        );
+                      case 'workout':
+                        return Lottie.asset(
+                          AppAssets.gymWeightLiftLottie,
+                          controller: controller.workoutController,
+                          width: 250,
+                          height: 250,
+                        );
+                      case 'med':
+                        return Lottie.asset(
+                          AppAssets.stressLottie,
+                          controller: controller.meditationController,
+                          width: 250,
+                          height: 250,
+                        );
+
+                      default:
+                        return Lottie.asset(
+                          AppAssets.trophyLottie,
+                          controller: controller.trophyController,
+                          onLoaded: (compositor) {
+                            controller.trophyController.duration =
+                                compositor.duration;
+                          },
+                          width: 200,
+                          height: 200,
+                        );
+                    }
+                  }),
                 ],
               ),
             ),
@@ -175,10 +192,41 @@ class LottiePage extends GetView<LottieController> {
                       debugPrint('Green onTapCancel');
                       controller.isElevated.value = true;
                     },
+                    onTapCancel: () {
+                      controller.isElevated.value = true;
+                    },
                     onTap: controller.isAnimating.value
                         ? null
                         : () {
-                            controller.onTap();
+                            final String category =
+                                controller.firstCategories.value.modeName;
+                            if (category == 'default') {
+                              controller.onTap(
+                                isSoundNeeded: true,
+                                mode: category,
+                              );
+                            } else if (category == 'reading') {
+                              controller.onTap(
+                                isSoundNeeded: true,
+                                mode: category,
+                              );
+                            } else if (category == 'workout') {
+                              controller.onTap(
+                                isSoundNeeded: true,
+                                mode: category,
+                              );
+                            } else if (category == 'med') {
+                              controller.onTap(
+                                isSoundNeeded: true,
+                                mode: category,
+                              );
+                            } else if (category == 'Dev') {
+                              controller.onTap(
+                                isSoundNeeded: true,
+                                mode: category,
+                              );
+                            }
+                            log(category);
                           },
                     child: Container(
                       decoration: BoxDecoration(
@@ -192,6 +240,69 @@ class LottiePage extends GetView<LottieController> {
                   ),
                 ],
               ),
+            ),
+            Positioned(
+              top: 10,
+              right: 10,
+              // right: 0,
+              child: Obx(() {
+                return SizedBox(
+                  width: 70,
+                  height: 35,
+                  child: DecoratedBox(
+                    decoration: ShapeDecoration(
+                      color: Colors.black.withOpacity(.05),
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          style: BorderStyle.solid,
+                          color: bgColor,
+                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                      ),
+                    ),
+                    child: DropdownButton<Categories>(
+                      value: controller.firstCategories.value,
+
+                      isExpanded: true,
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.zero,
+                      // remove underline
+                      underline: const SizedBox(),
+                      // hide dropdown icon
+                      icon: const SizedBox.shrink(),
+                      items: controller.categories
+                          .map(
+                            (category) => DropdownMenuItem<Categories>(
+                              value: category,
+                              child: Center(
+                                child: Text(
+                                  category.modeName,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    // color: Colors.black54
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                          .toList(),
+
+                      onChanged: (Categories? value) async {
+                        controller.loadingController.forward();
+                        controller.loading.value = true;
+                        if (value != null) {
+                          controller.firstCategories.value = value;
+                        }
+                        await Future.delayed(Duration(seconds: 1));
+                        controller.loading.value = false;
+                        controller.loadingController.reset();
+                      },
+                    ),
+                  ),
+                );
+              }),
             ),
           ],
         ),
