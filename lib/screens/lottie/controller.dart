@@ -58,7 +58,7 @@ class LottieController extends GetxController with GetTickerProviderStateMixin {
     Categories(modeName: 'mini 01', lottieResource: AppAssets.nightLottie),
     Categories(modeName: 'mini 02', lottieResource: AppAssets.nightLottie),
     Categories(modeName: 'mini 03', lottieResource: AppAssets.nightLottie),
-    Categories(modeName: 'workout full', lottieResource: AppAssets.nightLottie),
+    // Categories(modeName: 'workout full', lottieResource: AppAssets.nightLottie),
   ].obs;
   final HiveFunctions hiveFunctions = HiveFunctions();
   final Rx<Categories> firstCategories = Categories(
@@ -300,7 +300,7 @@ class LottieController extends GetxController with GetTickerProviderStateMixin {
       } else if (index == 4) {
         tickerFuture = fourthController.forward();
       } else {
-        tickerFuture = heroController.forward();
+        heroController..stop()..reset()..forward();
       }
       if (index >= 6) {
         firstController.reset();
@@ -318,11 +318,11 @@ class LottieController extends GetxController with GetTickerProviderStateMixin {
   }
 
   click({bool isSoundNeeded = false}) async {
+    if (isSoundNeeded) handleEnter();
     confettiForNormalClickController
       ..stop()
       ..reset()
       ..forward();
-    if (isSoundNeeded) handleEnter();
     isElevated.value = false;
     await Future.delayed(const Duration(milliseconds: 220));
     isElevated.value = true;
@@ -385,15 +385,12 @@ class LottieController extends GetxController with GetTickerProviderStateMixin {
     timerForHold = Timer.periodic(Duration(milliseconds: 16), (_) {
       if (gymLoadingBasedController.value < 1) {
         gymLoadingBasedController.value += .025;
-
       } else {
         gymLoadingBasedController.value = 1;
         timerForHold?.cancel();
         log('horraaayyy');
       }
-
     });
-
   }
 
   void gymspecificAnimationRelease() {
@@ -405,7 +402,7 @@ class LottieController extends GetxController with GetTickerProviderStateMixin {
       } else {
         gymLoadingBasedController.value = 0;
         timerForHold?.cancel();
-        log('nill');
+        log('from gym release');
       }
     });
   }
