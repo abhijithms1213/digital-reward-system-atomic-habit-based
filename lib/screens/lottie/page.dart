@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:drewardsystem/core/constants/app_assets.dart';
 import 'package:drewardsystem/screens/lottie/controller.dart';
 import 'package:drewardsystem/screens/lottie/model/habit_models.dart';
+import 'package:drewardsystem/screens/lottie/widgets/mini_tasks.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -16,6 +17,193 @@ class LottiePage extends GetView<LottieController> {
       body: SafeArea(
         child: Stack(
           children: [
+            //troffy center
+            Obx(() {
+              if (controller.loading.value) {
+                return Center(
+                  child: Lottie.asset(
+                    AppAssets.sandyLoadingLottie,
+                    controller: controller.loadingController,
+                    width: 200,
+                    height: 200,
+                  ),
+                );
+              }
+              if (controller.firstCategories.value.modeName == 'mini 01') {
+                return Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 50,
+                  top: 0,
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        width: double.infinity,
+                        height: 300,
+                        // color: Colors.red.withOpacity(0.5),
+                        child: WidgetMiniTasks(
+                          lottieFile: AppAssets.success01Lottie,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              }
+              if (controller.firstCategories.value.modeName == 'mini 02') {
+                return Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 50,
+                  top: 0,
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        width: double.infinity,
+                        height: 300,
+                        // color: Colors.red.withOpacity(0.5),
+                        child: WidgetMiniTasks(
+                          lottieFile: AppAssets.success02Lottie,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              }
+              if (controller.firstCategories.value.modeName == 'mini 03') {
+                return Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 50,
+                  top: 0,
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        width: double.infinity,
+                        height: 300,
+                        // color: Colors.red.withOpacity(0.5),
+                        child: WidgetMiniTasks(
+                          lottieFile: AppAssets.success03Lottie,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              }
+              return Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                top: 0,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Obx(() {
+                      final mode = controller.firstCategories.value.modeName;
+                      // if (controller.loading.value) {
+                      //   return Lottie.asset(
+                      //     AppAssets.sandyLoadingLottie,
+                      //     controller: controller.loadingController,
+                      //     width: 200,
+                      //     height: 200,
+                      //   );
+                      // }
+                      switch (mode) {
+                        case 'night':
+                          return Lottie.asset(
+                            AppAssets.aimHitLottie,
+                            frameRate: FrameRate(120),
+                            controller: controller.nightController,
+                            width: 350,
+                            height: 350,
+                          );
+                        case 'workout full':
+                          return Lottie.asset(
+                            AppAssets.gymLoadingBasedLottie,
+                            frameRate: FrameRate(120),
+                            controller: controller.gymLoadingBasedController,
+                            width: 350,
+                            height: 350,
+                          );
+                        case 'morning':
+                          return Lottie.asset(
+                            AppAssets.coffeeMorningLottie,
+                            controller: controller.morningController,
+
+                            width: 250,
+                            height: 250,
+                          );
+                        case 'Dev':
+                          return Lottie.asset(
+                            AppAssets.developerLottie,
+                            controller: controller.devHabitController,
+                            width: 250,
+                            height: 250,
+                          );
+
+                        case 'reading':
+                          return Lottie.asset(
+                            AppAssets.readingLottie,
+                            controller: controller.readController,
+                            width: 330,
+                            height: 330,
+                          );
+                        case 'workout':
+                          return Lottie.asset(
+                            AppAssets.gymWeightLiftLottie,
+                            controller: controller.workoutController,
+                            width: 250,
+                            height: 250,
+                          );
+                        case 'med':
+                          return Lottie.asset(
+                            AppAssets.stressLottie,
+                            controller: controller.meditationController,
+                            width: 250,
+                            height: 250,
+                          );
+
+                        default:
+                          return Lottie.asset(
+                            AppAssets.trophyLottie,
+                            controller: controller.trophyController,
+                            onLoaded: (compositor) {
+                              controller.trophyController.duration =
+                                  compositor.duration;
+                            },
+                            width: 200,
+                            height: 200,
+                          );
+                      }
+                    }),
+                  ],
+                ),
+              );
+              // return SizedBox.shrink();
+            }),
+
+            // if (controller.firstCategories.value.modeName != 'mini 01')
+            Positioned(
+              bottom: -220,
+              left: 0,
+              right: 0,
+              child: Container(
+                // color: Colors.red,
+                child: Lottie.asset(
+                  AppAssets.flextConfettiLottie,
+                  controller: controller.confettiForNormalClickController,
+                  onLoaded: (p0) {
+                    controller.confettiForNormalClickController.duration =
+                        p0.duration;
+                  },
+                  width: MediaQuery.of(context).size.width,
+                  height: 700,
+                ),
+              ),
+            ),
             Positioned(
               bottom: -300,
               left: 0,
@@ -106,74 +294,6 @@ class LottiePage extends GetView<LottieController> {
                 ),
               ),
             ),
-            //troffy center
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              top: 0,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Obx(() {
-                    final mode = controller.firstCategories.value.modeName;
-                    if (controller.loading.value) {
-                      return Lottie.asset(
-                        // 'assets/lottie/Water splash effect.json',
-                        AppAssets.pointEarnLottie,
-                        controller: controller.loadingController,
-                        width: 250,
-                        height: 250,
-                      );
-                    }
-                    switch (mode) {
-                      case 'Dev':
-                        return Lottie.asset(
-                          AppAssets.developerLottie,
-                          controller: controller.devHabitController,
-                          width: 250,
-                          height: 250,
-                        );
-
-                      case 'reading':
-                        return Lottie.asset(
-                          AppAssets.readingLottie,
-                          controller: controller.readController,
-                          width: 250,
-                          height: 250,
-                        );
-                      case 'workout':
-                        return Lottie.asset(
-                          AppAssets.gymWeightLiftLottie,
-                          controller: controller.workoutController,
-                          width: 250,
-                          height: 250,
-                        );
-                      case 'med':
-                        return Lottie.asset(
-                          AppAssets.stressLottie,
-                          controller: controller.meditationController,
-                          width: 250,
-                          height: 250,
-                        );
-
-                      default:
-                        return Lottie.asset(
-                          AppAssets.trophyLottie,
-                          controller: controller.trophyController,
-                          onLoaded: (compositor) {
-                            controller.trophyController.duration =
-                                compositor.duration;
-                          },
-                          width: 200,
-                          height: 200,
-                        );
-                    }
-                  }),
-                ],
-              ),
-            ),
 
             // button overlay
             Positioned(
@@ -184,47 +304,58 @@ class LottiePage extends GetView<LottieController> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   GestureDetector(
-                    onTapDown: (_) {
-                      controller.isElevated.value = false;
-                      debugPrint('Yellow onTapCancel');
-                    },
-                    onTapUp: (_) {
-                      debugPrint('Green onTapCancel');
+                    onTapDown: controller.loading.value
+                        ? null
+                        : (_) {
+                            controller.isElevated.value = false;
+                            debugPrint('onTapDown or release');
+                            controller.gymspecificAnimationHold();
+                          },
+                    onTapUp: (_) async {
+                      if (controller.firstCategories.value.modeName ==
+                          'workout full') {
+                        // await Future.delayed(Duration(milliseconds: 100));
+
+                      controller.gymspecificAnimationRelease();
+                      }
+                      // controller.cancelTapOnRelease();
+                      debugPrint('onTapUp');
                       controller.isElevated.value = true;
                     },
                     onTapCancel: () {
                       controller.isElevated.value = true;
+                      // controller.gymspecificAnimationRelease();
                     },
                     onTap: controller.isAnimating.value
                         ? null
                         : () {
                             final String category =
                                 controller.firstCategories.value.modeName;
-                            if (category == 'default') {
+
+                            if (controller.loading.value == false &&
+                                category != 'mini 01' &&
+                                category != 'mini 02' &&
+                                category != 'mini 03' &&
+                                category != 'workout full') {
                               controller.onTap(
                                 isSoundNeeded: true,
                                 mode: category,
                               );
-                            } else if (category == 'reading') {
-                              controller.onTap(
-                                isSoundNeeded: true,
-                                mode: category,
-                              );
-                            } else if (category == 'workout') {
-                              controller.onTap(
-                                isSoundNeeded: true,
-                                mode: category,
-                              );
-                            } else if (category == 'med') {
-                              controller.onTap(
-                                isSoundNeeded: true,
-                                mode: category,
-                              );
-                            } else if (category == 'Dev') {
-                              controller.onTap(
-                                isSoundNeeded: true,
-                                mode: category,
-                              );
+                            } else if (controller.loading.value == false &&
+                                category == 'workout full') {
+
+                      controller.isElevated.value = true;
+                            } else {
+                              if (controller.miniTaskCurrentValue.value <= 4) {
+                                controller.heroController
+                                  ..stop()
+                                  ..reset()
+                                  ..forward();
+                              }
+                              var current =
+                                  controller.miniTaskCurrentValue.value =
+                                      controller.miniTaskCurrentValue.value + 1;
+                              controller.miniTasks(current);
                             }
                             log(category);
                           },
@@ -260,50 +391,96 @@ class LottiePage extends GetView<LottieController> {
                         borderRadius: BorderRadius.all(Radius.circular(25.0)),
                       ),
                     ),
-                    child: DropdownButton<Categories>(
-                      value: controller.firstCategories.value,
+                    child:
+                        // Obx(() {
+                        //   return
+                        DropdownButton<Categories>(
+                          value: controller.firstCategories.value,
 
-                      isExpanded: true,
-                      alignment: Alignment.center,
-                      padding: EdgeInsets.zero,
-                      // remove underline
-                      underline: const SizedBox(),
-                      // hide dropdown icon
-                      icon: const SizedBox.shrink(),
-                      items: controller.categories
-                          .map(
-                            (category) => DropdownMenuItem<Categories>(
-                              value: category,
-                              child: Center(
-                                child: Text(
-                                  category.modeName,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                    // color: Colors.black54
+                          dropdownColor: const Color(0xFFF9FAFB),
+
+                          isExpanded: true,
+                          alignment: Alignment.center,
+                          padding: EdgeInsets.zero,
+                          // remove underline
+                          underline: const SizedBox(),
+                          // hide dropdown icon
+                          icon: const SizedBox.shrink(),
+                          items: controller.categories
+                              .map(
+                                (category) => DropdownMenuItem<Categories>(
+                                  value: category,
+                                  child: Center(
+                                    child: Text(
+                                      category.modeName,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight:
+                                            controller.isProcessing.value
+                                            ? FontWeight.w400
+                                            : FontWeight.w600,
+                                        // color: Colors.black54
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          )
-                          .toList(),
+                              )
+                              .toList(),
 
-                      onChanged: (Categories? value) async {
-                        controller.loadingController.forward();
-                        controller.loading.value = true;
-                        if (value != null) {
-                          controller.firstCategories.value = value;
-                        }
-                        await Future.delayed(Duration(seconds: 1));
-                        controller.loading.value = false;
-                        controller.loadingController.reset();
-                      },
-                    ),
+                          onChanged: controller.isProcessing.value
+                              ? null
+                              : (Categories? value) async {
+                                  controller.loading.value = true;
+                                  if (value != null) {
+                                    controller.firstCategories.value = value;
+                                  }
+                                  await controller.loadingController.forward(
+                                    from: .4,
+                                  );
+                                  controller.loading.value = false;
+                                  controller.loadingController.reset();
+                                  log(
+                                    'ct${controller.miniTaskCurrentValue.value}',
+                                  );
+                                  if (controller.miniTaskCurrentValue.value !=
+                                      0) {
+                                    controller.miniTaskCurrentValue.value = 0;
+                                    controller.firstController.reset();
+                                    controller.secondController.reset();
+                                    controller.thirdController.reset();
+                                    controller.fourthController.reset();
+                                    controller.heroController.reset();
+                                    log(
+                                      'ct${controller.miniTaskCurrentValue.value}',
+                                    );
+                                  }
+                                },
+                          // );}
+                        ),
                   ),
                 );
               }),
             ),
+            // Positioned(
+            //   left: 0,
+            //   right: 0,
+            //   bottom: 50,
+            //   top: 0,
+            //   child: Center(
+            //     child: Padding(
+            //       padding: const EdgeInsets.all(8.0),
+            //       child: Container(
+            //         width: double.infinity,
+            //         height: 300,
+            //         // color: Colors.red.withOpacity(0.5),
+            //         child: WidgetMiniTasks(
+            //           lottieFile: AppAssets.success01Lottie,
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),
