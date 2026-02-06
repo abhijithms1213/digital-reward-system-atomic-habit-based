@@ -100,10 +100,10 @@ class LottieController extends GetxController with GetTickerProviderStateMixin {
     miniTaskearn = AudioPlayer();
     miniTaskTap = AudioPlayer();
 
-    miniTaskTap.setAsset(AppAssets.sfxMiniEnterForMiniTasks);
-    miniTaskearn.setAsset(AppAssets.sfxMiniEarnSound);
+   await miniTaskTap.setAsset(AppAssets.sfxMiniEnterForMiniTasks);
+   await miniTaskearn.setAsset(AppAssets.sfxMiniEarnSound);
 
-    enterSFXAudioPlayer.setAsset(AppAssets.sfxEnterButton);
+   await enterSFXAudioPlayer.setAsset(AppAssets.sfxEnterButton);
     enterSFXAudioPlayer.setClip(
       start: Duration(milliseconds: 1380),
       end: Duration(seconds: 2),
@@ -114,7 +114,7 @@ class LottieController extends GetxController with GetTickerProviderStateMixin {
         enterSFXAudioPlayer.seek(Duration.zero);
       }
     });
-    audioPlayer.setAsset(AppAssets.sfxUpVolumeRise);
+   await audioPlayer.setAsset(AppAssets.sfxUpVolumeRise);
     audioPlayer.setClip(
       start: Duration(milliseconds: 1300),
       end: Duration(seconds: 4),
@@ -269,7 +269,7 @@ class LottieController extends GetxController with GetTickerProviderStateMixin {
 
       mode ??= 'default';
       // to forward animation
-      if (mode != 'reading') heroAnimationForward(mode, true);
+      // if (mode != 'reading') heroAnimationForward(mode, true);
 
       await Future.delayed(Duration(milliseconds: 400), () {
         earnedPointController.forward();
@@ -277,14 +277,14 @@ class LottieController extends GetxController with GetTickerProviderStateMixin {
 
       // when completed the celebration
       // await celeTicket.whenComplete(() async {
-      celebrationController.reset();
-      await Future.delayed(Duration(seconds: 1));
-      // resetting after initial effect
-      rippleEffectController.reset();
-      earnedPointController.reset();
+        celebrationController.reset();
+        await Future.delayed(Duration(seconds: 1));
+        // resetting after initial effect
+        rippleEffectController.reset();
+        earnedPointController.reset();
 
-      // to reset
-      heroAnimationForward(mode ?? 'default', false);
+        // to reset
+        heroAnimationForward(mode ?? 'default', false);
       // });
     } finally {
       audioPlayer.pause();
@@ -317,6 +317,7 @@ class LottieController extends GetxController with GetTickerProviderStateMixin {
         tickerFuture = fourthController.forward();
       } else if (index == 5) {
         tickerFuture = heroController.forward();
+        celebrationController.forward();
       }
       await Future.delayed(Duration(milliseconds: 800));
       if (index <= 5 && index >= 0) {
@@ -336,8 +337,10 @@ class LottieController extends GetxController with GetTickerProviderStateMixin {
         heroController.reset();
         heroReplacerController.reset();
         miniTaskCurrentValue.value = 0;
+        if (celebrationController.isCompleted || index >= 6) {
+          celebrationController.reset();
+        }
       }
-      log('called');
     } finally {
       isAnimating.value = false;
       isProcessing.value = false;
