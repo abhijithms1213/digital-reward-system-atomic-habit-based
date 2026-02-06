@@ -376,7 +376,7 @@ class LottiePage extends GetView<LottieController> {
                             } else if (controller.loading.value == false &&
                                 category == 'workout full') {
                               // controller.isElevated.value = true;
-                            } else {
+                            } else if(controller.loading.value == false) {
                               var current =
                                   controller.miniTaskCurrentValue.value =
                                       controller.miniTaskCurrentValue.value + 1;
