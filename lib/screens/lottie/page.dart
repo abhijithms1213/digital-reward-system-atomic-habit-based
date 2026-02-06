@@ -13,7 +13,7 @@ class LottiePage extends GetView<LottieController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: bgColor,
+      // backgroundColor: bgColor,
       body: SafeArea(
         child: Stack(
           children: [
@@ -218,7 +218,7 @@ class LottiePage extends GetView<LottieController> {
                 height: 700,
               ),
             ),
-            // blacksmith tapping widget
+            // blacksmith tapping widget  tapping widget
             Positioned(
               bottom: 40,
               left: 0,
@@ -376,7 +376,7 @@ class LottiePage extends GetView<LottieController> {
                             } else if (controller.loading.value == false &&
                                 category == 'workout full') {
                               // controller.isElevated.value = true;
-                            } else if(controller.loading.value == false) {
+                            } else if (controller.loading.value == false) {
                               var current =
                                   controller.miniTaskCurrentValue.value =
                                       controller.miniTaskCurrentValue.value + 1;
@@ -408,145 +408,149 @@ class LottiePage extends GetView<LottieController> {
               top: 10,
               right: 10,
               // right: 0,
-              child: Obx(() {
-                return SizedBox(
-                  width: 70,
-                  height: 35,
-                  child: DecoratedBox(
-                    decoration: ShapeDecoration(
-                      color: Colors.black.withOpacity(.04),
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          style: BorderStyle.solid,
-                          color: bgColor,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Obx(() {
+                    return SizedBox(
+                      width: 70,
+                      height: 35,
+                      child: DecoratedBox(
+                        decoration: ShapeDecoration(
+                          color: Colors.black.withOpacity(.04),
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                              style: BorderStyle.solid,
+                              color: bgColor,
+                            ),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(25.0),
+                            ),
+                          ),
                         ),
-                        borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                        child:
+                            // Obx(() {
+                            //   return
+                            DropdownButton(
+                              value: controller.firstCategories.value,
+                              dropdownColor: const Color(0xFFF9FAFB),
+                              isExpanded: true,
+                              alignment: Alignment.center,
+                              padding: EdgeInsets.zero,
+                              underline: const SizedBox(),
+                              icon: const SizedBox.shrink(),
+
+                              // Elevated border radius and shadow
+                              elevation: 8,
+                              borderRadius: BorderRadius.circular(12),
+
+                              // Custom menu styling
+                              menuMaxHeight: 300,
+
+                              // Add padding to the dropdown menu
+                              selectedItemBuilder: (BuildContext context) {
+                                return controller.categories.map((category) {
+                                  return Center(
+                                    child: Text(
+                                      category.modeName,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight:
+                                            controller.isProcessing.value
+                                            ? FontWeight.w400
+                                            : FontWeight.w600,
+                                        color: Colors.black87,
+                                      ),
+                                    ),
+                                  );
+                                }).toList();
+                              },
+
+                              items: controller.categories.map((category) {
+                                return DropdownMenuItem(
+                                  value: category,
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 8,
+                                      horizontal: 8,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      border: Border(
+                                        bottom: BorderSide(
+                                          color: bgColor,
+                                          width: 0.5,
+                                        ),
+                                      ),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        category.modeName,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight:
+                                              controller.isProcessing.value
+                                              ? FontWeight.w400
+                                              : FontWeight.w600,
+                                          color: Colors.black87,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+
+                              onChanged: controller.isProcessing.value
+                                  ? null
+                                  : (Categories? value) async {
+                                      controller.loading.value = true;
+                                      if (value != null) {
+                                        controller.firstCategories.value =
+                                            value;
+                                      }
+                                      await controller.loadingController
+                                          .forward(from: .4);
+                                      controller.loading.value = false;
+                                      controller.loadingController.reset();
+                                      log(
+                                        'ct${controller.miniTaskCurrentValue.value}',
+                                      );
+                                      if (controller
+                                              .miniTaskCurrentValue
+                                              .value !=
+                                          0) {
+                                        controller.miniTaskCurrentValue.value =
+                                            0;
+                                        controller.firstController.reset();
+                                        controller.secondController.reset();
+                                        controller.thirdController.reset();
+                                        controller.fourthController.reset();
+                                        controller.heroController.reset();
+                                        log(
+                                          'ct${controller.miniTaskCurrentValue.value}',
+                                        );
+                                      }
+                                    },
+                              // );}
+                            ),
+                      ),
+                    );
+                  }),
+                  SizedBox(height: 6),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 5.0),
+                    child: GestureDetector(
+                      onTap: () => Get.toNamed('/about'),
+                      child: Icon(
+                        Icons.chevron_left_sharp,
+                        color: const Color.fromARGB(83, 0, 0, 0),
                       ),
                     ),
-                    child:
-                        // Obx(() {
-                        //   return
-                        DropdownButton(
-                          value: controller.firstCategories.value,
-                          dropdownColor: const Color(0xFFF9FAFB),
-                          isExpanded: true,
-                          alignment: Alignment.center,
-                          padding: EdgeInsets.zero,
-                          underline: const SizedBox(),
-                          icon: const SizedBox.shrink(),
-
-                          // Elevated border radius and shadow
-                          elevation: 8,
-                          borderRadius: BorderRadius.circular(12),
-
-                          // Custom menu styling
-                          menuMaxHeight: 300,
-
-                          // Add padding to the dropdown menu
-                          selectedItemBuilder: (BuildContext context) {
-                            return controller.categories.map((category) {
-                              return Center(
-                                child: Text(
-                                  category.modeName,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: controller.isProcessing.value
-                                        ? FontWeight.w400
-                                        : FontWeight.w600,
-                                    color: Colors.black87,
-                                  ),
-                                ),
-                              );
-                            }).toList();
-                          },
-
-                          items: controller.categories.map((category) {
-                            return DropdownMenuItem(
-                              value: category,
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 8,
-                                  horizontal: 8,
-                                ),
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    bottom: BorderSide(
-                                      color: bgColor,
-                                      width: 0.5,
-                                    ),
-                                  ),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    category.modeName,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: controller.isProcessing.value
-                                          ? FontWeight.w400
-                                          : FontWeight.w600,
-                                      color: Colors.black87,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            );
-                          }).toList(),
-
-                          onChanged: controller.isProcessing.value
-                              ? null
-                              : (Categories? value) async {
-                                  controller.loading.value = true;
-                                  if (value != null) {
-                                    controller.firstCategories.value = value;
-                                  }
-                                  await controller.loadingController.forward(
-                                    from: .4,
-                                  );
-                                  controller.loading.value = false;
-                                  controller.loadingController.reset();
-                                  log(
-                                    'ct${controller.miniTaskCurrentValue.value}',
-                                  );
-                                  if (controller.miniTaskCurrentValue.value !=
-                                      0) {
-                                    controller.miniTaskCurrentValue.value = 0;
-                                    controller.firstController.reset();
-                                    controller.secondController.reset();
-                                    controller.thirdController.reset();
-                                    controller.fourthController.reset();
-                                    controller.heroController.reset();
-                                    log(
-                                      'ct${controller.miniTaskCurrentValue.value}',
-                                    );
-                                  }
-                                },
-                          // );}
-                        ),
                   ),
-                );
-              }),
+                ],
+              ),
             ),
-            // Positioned(
-            //   left: 0,
-            //   right: 0,
-            //   bottom: 50,
-            //   top: 0,
-            //   child: Center(
-            //     child: Padding(
-            //       padding: const EdgeInsets.all(8.0),
-            //       child: Container(
-            //         width: double.infinity,
-            //         height: 300,
-            //         // color: Colors.red.withOpacity(0.5),
-            //         child: WidgetMiniTasks(
-            //           lottieFile: AppAssets.success01Lottie,
-            //         ),
-            //       ),
-            //     ),
-            //   ),
-            // ),
           ],
         ),
       ),
