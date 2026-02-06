@@ -15,7 +15,10 @@ class LottieController extends GetxController with GetTickerProviderStateMixin {
   late final AnimationController thirdController;
   late final AnimationController fourthController;
   late final AnimationController heroController;
+  late final AnimationController heroReplacerController;
   final RxInt miniTaskCurrentValue = 0.obs;
+  late AudioPlayer miniTaskearn;
+  late AudioPlayer miniTaskTap;
 
   //normal
   late final AnimationController completedController;
@@ -94,6 +97,12 @@ class LottieController extends GetxController with GetTickerProviderStateMixin {
   _audio() async {
     audioPlayer = AudioPlayer();
     earnAudioPlayer = AudioPlayer();
+    miniTaskearn = AudioPlayer();
+    miniTaskTap = AudioPlayer();
+
+    miniTaskTap.setAsset(AppAssets.sfxMiniEnterForMiniTasks);
+    miniTaskearn.setAsset(AppAssets.sfxMiniEarnSound);
+
     enterSFXAudioPlayer.setAsset(AppAssets.sfxEnterButton);
     enterSFXAudioPlayer.setClip(
       start: Duration(milliseconds: 1380),
@@ -187,7 +196,7 @@ class LottieController extends GetxController with GetTickerProviderStateMixin {
     // animation=Tween<double>(begin: 0,end: .9).animate(firstController);
     secondController = AnimationController(
       vsync: this,
-      // duration: Duration(seconds: 2),
+      // duration: Duration(milliseconds: 8000),
     );
     thirdController = AnimationController(
       vsync: this,
@@ -198,6 +207,10 @@ class LottieController extends GetxController with GetTickerProviderStateMixin {
       // duration: Duration(seconds: 2),
     );
     heroController = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 2),
+    );
+    heroReplacerController = AnimationController(
       vsync: this,
       // duration: Duration(seconds: 2),
     );
@@ -284,9 +297,13 @@ class LottieController extends GetxController with GetTickerProviderStateMixin {
     }
   }
 
-  miniTasks(int index) {
+  miniTasks(int index) async {
     isProcessing.value = true;
-    click(isSoundNeeded: true);
+    miniTaskTap.setClip(
+      start: Duration(milliseconds: 50),
+      // end: Duration(seconds: 2),
+    );
+    click(isSoundNeeded: true, isMini: true);
     if (isAnimating.value) return;
     isAnimating.value = true;
     TickerFuture tickerFuture;
@@ -299,8 +316,18 @@ class LottieController extends GetxController with GetTickerProviderStateMixin {
         tickerFuture = thirdController.forward();
       } else if (index == 4) {
         tickerFuture = fourthController.forward();
-      } else {
-        heroController..stop()..reset()..forward();
+      } else if (index == 5) {
+        tickerFuture = heroController.forward();
+      }
+      await Future.delayed(Duration(milliseconds: 800));
+      if (index <= 5 && index >= 0) {
+        if (miniTaskearn.playing) {
+          miniTaskearn.pause();
+          miniTaskearn.seek(Duration.zero);
+          miniTaskearn.play();
+        } else {
+          miniTaskearn.play();
+        }
       }
       if (index >= 6) {
         firstController.reset();
@@ -317,8 +344,8 @@ class LottieController extends GetxController with GetTickerProviderStateMixin {
     }
   }
 
-  click({bool isSoundNeeded = false}) async {
-    if (isSoundNeeded) handleEnter();
+  click({bool isSoundNeeded = false, bool isMini = false}) async {
+    if (isSoundNeeded) handleEnter(isMini);
     confettiForNormalClickController
       ..stop()
       ..reset()
@@ -328,13 +355,27 @@ class LottieController extends GetxController with GetTickerProviderStateMixin {
     isElevated.value = true;
   }
 
-  void handleEnter() {
-    if (enterSFXAudioPlayer.playing) {
-      enterSFXAudioPlayer.pause();
-      enterSFXAudioPlayer.seek(Duration.zero);
-      enterSFXAudioPlayer.play();
+  void handleEnter(bool isMini) {
+    if (isMini) {
+      handleMiniEnter();
     } else {
-      enterSFXAudioPlayer.play();
+      if (enterSFXAudioPlayer.playing) {
+        enterSFXAudioPlayer.pause();
+        enterSFXAudioPlayer.seek(Duration.zero);
+        enterSFXAudioPlayer.play();
+      } else {
+        enterSFXAudioPlayer.play();
+      }
+    }
+  }
+
+  void handleMiniEnter() {
+    if (miniTaskTap.playing) {
+      miniTaskTap.pause();
+      miniTaskTap.seek(Duration.zero);
+      miniTaskTap.play();
+    } else {
+      miniTaskTap.play();
     }
   }
 
@@ -411,6 +452,8 @@ class LottieController extends GetxController with GetTickerProviderStateMixin {
   void dispose() {
     audioPlayer.dispose();
     enterSFXAudioPlayer.dispose();
+    miniTaskTap.dispose();
+    miniTaskearn.dispose();
     trophyController.dispose();
     celebrationController.dispose();
     rippleEffectController.dispose();
@@ -429,6 +472,7 @@ class LottieController extends GetxController with GetTickerProviderStateMixin {
     fourthController.dispose();
     thirdController.dispose();
     heroController.dispose();
+    heroReplacerController.dispose();
     gymLoadingBasedController.dispose();
     super.dispose();
   }

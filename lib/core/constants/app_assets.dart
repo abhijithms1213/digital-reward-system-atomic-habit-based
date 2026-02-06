@@ -38,4 +38,5 @@ class AppAssets {
    static const String success01Lottie='assets/lottie/success_01.json';
    static const String success02Lottie='assets/lottie/success_02.json';
    static const String success03Lottie='assets/lottie/success_03.json';
+   static const String arrowHitLottie='assets/lottie/target_arrow_animation.json';
 }

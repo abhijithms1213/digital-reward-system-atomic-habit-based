@@ -303,21 +303,53 @@ class LottiePage extends GetView<LottieController> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  // if (controller.firstCategories.value.modeName ==
+                  //     'workout full')
+                  //   GestureDetector(
+                  //     onTapDown: controller.loading.value
+                  //         ? null
+                  //         : (_) {
+                  //             // controller.isElevated.value = false;
+                  //             debugPrint('onTapDown or release');
+                  //             if (controller.firstCategories.value.modeName ==
+                  //                 'workout full') {
+                  //               controller.gymspecificAnimationHold();
+                  //             }
+                  //           },
+                  //     onTapUp: (_) async {
+                  //       if (controller.firstCategories.value.modeName ==
+                  //           'workout full') {
+                  //         // await Future.delayed(Duration(milliseconds: 100));
+
+                  //         controller.gymspecificAnimationRelease();
+                  //       }
+                  //       // controller.cancelTapOnRelease();
+                  //       debugPrint('onTapUp');
+                  //       controller.isElevated.value = true;
+                  //     },
+                  //     onTapCancel: () {
+                  //       controller.isElevated.value = true;
+                  //       // controller.gymspecificAnimationRelease();
+                  //     },
+                  //     onTap: controller.isAnimating.value ? null : () {},
+                  //     child: Container(
+                  //       decoration: BoxDecoration(
+                  //         // color: Colors.red,
+                  //         shape: BoxShape.rectangle,
+                  //       ),
+                  //       height: 100,
+                  //       width: 200,
+                  //       child: Text(''),
+                  //     ),
+                  //   ),
                   GestureDetector(
                     onTapDown: controller.loading.value
                         ? null
                         : (_) {
                             controller.isElevated.value = false;
                             debugPrint('onTapDown or release');
-                            controller.gymspecificAnimationHold();
                           },
                     onTapUp: (_) async {
-                      if (controller.firstCategories.value.modeName ==
-                          'workout full') {
-                        // await Future.delayed(Duration(milliseconds: 100));
-
-                      controller.gymspecificAnimationRelease();
-                      }
                       // controller.cancelTapOnRelease();
                       debugPrint('onTapUp');
                       controller.isElevated.value = true;
@@ -343,19 +375,18 @@ class LottiePage extends GetView<LottieController> {
                               );
                             } else if (controller.loading.value == false &&
                                 category == 'workout full') {
-
-                      controller.isElevated.value = true;
+                              // controller.isElevated.value = true;
                             } else {
-                              if (controller.miniTaskCurrentValue.value <= 4) {
-                                controller.heroController
-                                  ..stop()
-                                  ..reset()
-                                  ..forward();
-                              }
                               var current =
                                   controller.miniTaskCurrentValue.value =
                                       controller.miniTaskCurrentValue.value + 1;
                               controller.miniTasks(current);
+                              if (controller.miniTaskCurrentValue.value <= 4 && controller.miniTaskCurrentValue.value>0) {
+                                controller.heroReplacerController
+                                  ..stop()
+                                  ..reset()
+                                  ..forward();
+                              }
                             }
                             log(category);
                           },

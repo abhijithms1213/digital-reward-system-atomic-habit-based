@@ -30,7 +30,13 @@ class WidgetMiniTasks extends StatelessWidget {
                 controller: controller.firstController,
 
                 onLoaded: (compositor) {
-                  controller.firstController.duration = compositor.duration;
+                  if (lottieFile == AppAssets.success02Lottie) {
+                    controller.firstController.duration = Duration(
+                      milliseconds: 900,
+                    );
+                  } else {
+                    controller.firstController.duration = compositor.duration;
+                  }
                 },
               ),
             ),
@@ -46,8 +52,15 @@ class WidgetMiniTasks extends StatelessWidget {
                 controller: controller.secondController,
 
                 onLoaded: (compositor) {
-                  controller.secondController.duration = compositor.duration;
+                  if (lottieFile == AppAssets.success02Lottie) {
+                    controller.secondController.duration = Duration(
+                      milliseconds: 900,
+                    );
+                  } else {
+                    controller.secondController.duration = compositor.duration;
+                  }
                 },
+
                 width: 80,
                 height: 80,
               ),
@@ -63,8 +76,14 @@ class WidgetMiniTasks extends StatelessWidget {
               child: Lottie.asset(
                 lottieFile,
                 controller: controller.thirdController,
-                onLoaded: (p0) {
-                  controller.thirdController.duration = p0.duration;
+                onLoaded: (compositor) {
+                  if (lottieFile == AppAssets.success02Lottie) {
+                    controller.thirdController.duration = Duration(
+                      milliseconds: 900,
+                    );
+                  } else {
+                    controller.thirdController.duration = compositor.duration;
+                  }
                 },
                 width: 80,
                 height: 80,
@@ -80,8 +99,14 @@ class WidgetMiniTasks extends StatelessWidget {
               child: Lottie.asset(
                 lottieFile,
                 controller: controller.fourthController,
-                onLoaded: (p0) {
-                  controller.fourthController.duration = p0.duration;
+                onLoaded: (compositor) {
+                  if (lottieFile == AppAssets.success02Lottie) {
+                    controller.fourthController.duration = Duration(
+                      milliseconds: 900,
+                    );
+                  } else {
+                    controller.fourthController.duration = compositor.duration;
+                  }
                 },
                 width: 80,
                 height: 80,
@@ -98,14 +123,14 @@ class WidgetMiniTasks extends StatelessWidget {
                 // color: const Color.fromARGB(8, 0, 0, 0),
               ),
               child: Lottie.asset(
-                AppAssets.aimHitLottie,
-                controller: controller.heroController,
+                AppAssets.arrowHitLottie,
+                controller: controller.heroReplacerController,
                 onLoaded: (p0) {
-                  controller.heroController.duration = p0.duration;
+                  controller.heroReplacerController.duration = p0.duration;
                 },
                 width: 200,
                 height: 200,
-                fit: BoxFit.cover
+                fit: BoxFit.cover,
               ),
             );
           }
@@ -117,9 +142,16 @@ class WidgetMiniTasks extends StatelessWidget {
             child: Lottie.asset(
               lottieFile,
               controller: controller.heroController,
-              onLoaded: (p0) {
-                controller.heroController.duration = p0.duration;
-              },
+              // onLoaded: (compositor) {
+              //   // if (lottieFile == AppAssets.success02Lottie) {
+              //   //   controller.heroController.duration = Duration(
+              //   //     milliseconds: 800,
+              //   //   );
+              //   // } else {
+              //     controller.heroController.duration = compositor.duration;
+              //   // }
+              // },
+              frameRate: FrameRate(120),
               width: 200,
               height: 200,
             ),
