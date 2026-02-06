@@ -9,7 +9,7 @@ import 'package:lottie/lottie.dart';
 
 class LottiePage extends GetView<LottieController> {
   LottiePage({super.key});
-  final bgColor = Color(0xFFE7ECEF);
+  final bgColor = Color.fromARGB(255, 255, 255, 255);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -381,7 +381,8 @@ class LottiePage extends GetView<LottieController> {
                                   controller.miniTaskCurrentValue.value =
                                       controller.miniTaskCurrentValue.value + 1;
                               controller.miniTasks(current);
-                              if (controller.miniTaskCurrentValue.value <= 4 && controller.miniTaskCurrentValue.value>0) {
+                              if (controller.miniTaskCurrentValue.value <= 4 &&
+                                  controller.miniTaskCurrentValue.value > 0) {
                                 controller.heroReplacerController
                                   ..stop()
                                   ..reset()
@@ -413,7 +414,7 @@ class LottiePage extends GetView<LottieController> {
                   height: 35,
                   child: DecoratedBox(
                     decoration: ShapeDecoration(
-                      color: Colors.black.withOpacity(.05),
+                      color: Colors.black.withOpacity(.04),
                       shape: RoundedRectangleBorder(
                         side: BorderSide(
                           style: BorderStyle.solid,
@@ -425,39 +426,73 @@ class LottiePage extends GetView<LottieController> {
                     child:
                         // Obx(() {
                         //   return
-                        DropdownButton<Categories>(
+                        DropdownButton(
                           value: controller.firstCategories.value,
-
                           dropdownColor: const Color(0xFFF9FAFB),
-
                           isExpanded: true,
                           alignment: Alignment.center,
                           padding: EdgeInsets.zero,
-                          // remove underline
                           underline: const SizedBox(),
-                          // hide dropdown icon
                           icon: const SizedBox.shrink(),
-                          items: controller.categories
-                              .map(
-                                (category) => DropdownMenuItem<Categories>(
-                                  value: category,
-                                  child: Center(
-                                    child: Text(
-                                      category.modeName,
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight:
-                                            controller.isProcessing.value
-                                            ? FontWeight.w400
-                                            : FontWeight.w600,
-                                        // color: Colors.black54
-                                      ),
+
+                          // Elevated border radius and shadow
+                          elevation: 8,
+                          borderRadius: BorderRadius.circular(12),
+
+                          // Custom menu styling
+                          menuMaxHeight: 300,
+
+                          // Add padding to the dropdown menu
+                          selectedItemBuilder: (BuildContext context) {
+                            return controller.categories.map((category) {
+                              return Center(
+                                child: Text(
+                                  category.modeName,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: controller.isProcessing.value
+                                        ? FontWeight.w400
+                                        : FontWeight.w600,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                              );
+                            }).toList();
+                          },
+
+                          items: controller.categories.map((category) {
+                            return DropdownMenuItem(
+                              value: category,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 8,
+                                  horizontal: 8,
+                                ),
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: bgColor,
+                                      width: 0.5,
                                     ),
                                   ),
                                 ),
-                              )
-                              .toList(),
+                                child: Center(
+                                  child: Text(
+                                    category.modeName,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: controller.isProcessing.value
+                                          ? FontWeight.w400
+                                          : FontWeight.w600,
+                                      color: Colors.black87,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }).toList(),
 
                           onChanged: controller.isProcessing.value
                               ? null
