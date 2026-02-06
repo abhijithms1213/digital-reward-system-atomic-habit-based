@@ -252,31 +252,31 @@ class LottieController extends GetxController with GetTickerProviderStateMixin {
     // controller.celebrationController.addListener();
     try {
       // tapping controller
-      // rippleEffectController.forward(); // tapping effect confetti
+      rippleEffectController.forward(); // tapping effect confetti
 
-      // audioPlayer.play();
+      audioPlayer.play();
 
       // waits for the timing
       await Future.delayed(Duration(milliseconds: 950));
 
-      // if (mode == 'reading') readController.forward();
+      if (mode == 'reading') readController.forward();
       // celebration coffine forward after hit
-      // var celeTicket = celebrationController.forward();
+      var celeTicket = celebrationController.forward();
 
-      // earnAudioPlayer.play();
+      earnAudioPlayer.play();
 
       await Future.delayed(Duration(milliseconds: 100));
 
       mode ??= 'default';
       // to forward animation
-      // if (mode != 'reading') heroAnimationForward(mode, true);
+      if (mode != 'reading') heroAnimationForward(mode, true);
 
       await Future.delayed(Duration(milliseconds: 400), () {
         earnedPointController.forward();
       });
 
       // when completed the celebration
-      // await celeTicket.whenComplete(() async {
+      await celeTicket.whenComplete(() async {
         celebrationController.reset();
         await Future.delayed(Duration(seconds: 1));
         // resetting after initial effect
@@ -285,7 +285,7 @@ class LottieController extends GetxController with GetTickerProviderStateMixin {
 
         // to reset
         heroAnimationForward(mode ?? 'default', false);
-      // });
+      });
     } finally {
       audioPlayer.pause();
       audioPlayer.seek(Duration.zero);

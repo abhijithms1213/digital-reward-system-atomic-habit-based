@@ -541,7 +541,9 @@ class LottiePage extends GetView<LottieController> {
                   Padding(
                     padding: const EdgeInsets.only(right: 5.0),
                     child: GestureDetector(
-                      onTap: () => Get.toNamed('/about'),
+                      onTap: () {
+                       if(!controller.isAnimating.value) Get.toNamed('/about');
+                      },
                       child: Icon(
                         Icons.chevron_left_sharp,
                         color: const Color.fromARGB(83, 0, 0, 0),
