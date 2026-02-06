@@ -1,4 +1,7 @@
 class AppAssets {
+   //me
+   static const String me='assets/me.png';
+
    // Music
    static const String sfxRise='assets/audio/sfx_01.mp3';
    static const String sfxUpVolumeRise='assets/audio/sfx_01_upVolume.MP3';
@@ -39,4 +42,6 @@ class AppAssets {
    static const String success02Lottie='assets/lottie/success_02.json';
    static const String success03Lottie='assets/lottie/success_03.json';
    static const String arrowHitLottie='assets/lottie/target_arrow_animation.json';
+
+
 }
