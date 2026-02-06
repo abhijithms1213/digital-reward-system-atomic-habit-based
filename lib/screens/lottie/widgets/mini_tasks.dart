@@ -30,7 +30,7 @@ class WidgetMiniTasks extends StatelessWidget {
                 controller: controller.firstController,
 
                 onLoaded: (compositor) {
-                  if (lottieFile == AppAssets.success02Lottie) {
+                  if (lottieFile == AppAssets.success04Lottie) {
                     controller.firstController.duration = Duration(
                       milliseconds: 900,
                     );
@@ -52,7 +52,7 @@ class WidgetMiniTasks extends StatelessWidget {
                 controller: controller.secondController,
 
                 onLoaded: (compositor) {
-                  if (lottieFile == AppAssets.success02Lottie) {
+                  if (lottieFile == AppAssets.success04Lottie) {
                     controller.secondController.duration = Duration(
                       milliseconds: 900,
                     );
@@ -77,7 +77,7 @@ class WidgetMiniTasks extends StatelessWidget {
                 lottieFile,
                 controller: controller.thirdController,
                 onLoaded: (compositor) {
-                  if (lottieFile == AppAssets.success02Lottie) {
+                  if (lottieFile == AppAssets.success04Lottie) {
                     controller.thirdController.duration = Duration(
                       milliseconds: 900,
                     );
@@ -100,7 +100,7 @@ class WidgetMiniTasks extends StatelessWidget {
                 lottieFile,
                 controller: controller.fourthController,
                 onLoaded: (compositor) {
-                  if (lottieFile == AppAssets.success02Lottie) {
+                  if (lottieFile == AppAssets.success04Lottie) {
                     controller.fourthController.duration = Duration(
                       milliseconds: 900,
                     );

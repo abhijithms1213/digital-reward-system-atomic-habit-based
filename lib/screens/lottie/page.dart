@@ -64,7 +64,7 @@ class LottiePage extends GetView<LottieController> {
                         height: 300,
                         // color: Colors.red.withOpacity(0.5),
                         child: WidgetMiniTasks(
-                          lottieFile: AppAssets.success02Lottie,
+                          lottieFile: AppAssets.success04Lottie,
                         ),
                       ),
                     ),
