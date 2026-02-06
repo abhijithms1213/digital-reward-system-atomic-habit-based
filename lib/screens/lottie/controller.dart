@@ -304,7 +304,6 @@ class LottieController extends GetxController with GetTickerProviderStateMixin {
       // end: Duration(seconds: 2),
     );
     click(isSoundNeeded: true, isMini: true);
-    if (isAnimating.value) return;
     isAnimating.value = true;
     TickerFuture tickerFuture;
     try {
@@ -335,6 +334,7 @@ class LottieController extends GetxController with GetTickerProviderStateMixin {
         thirdController.reset();
         fourthController.reset();
         heroController.reset();
+        heroReplacerController.reset();
         miniTaskCurrentValue.value = 0;
       }
       log('called');
